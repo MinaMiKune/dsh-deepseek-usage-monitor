@@ -18,7 +18,8 @@
     "lib/*.js",
     "locale/*.json",
     "icon.svg",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "dsh": {
     "bundle": {
@@ -29,7 +30,8 @@
     }
   },
   "scripts": {
-    "test": "node --test --test-isolation=none \"test/*.test.mjs\""
+    "test": "node --test test/*.test.mjs",
+    "test:sandbox": "node --test --test-isolation=none \"test/*.test.mjs\""
   },
   "license": "MIT"
 }

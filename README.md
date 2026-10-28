@@ -5,6 +5,15 @@
 插件包名：`@local/dsh-deepseek-usage-monitor`
 形态：一个 DSH bundle（Host 半 + 浏览器半 + 左栏槽位注册 + Agent 工具 + 已鉴权的 `/api` 路由）。
 
+**仓库**：<https://github.com/MinaMiKune/dsh-deepseek-usage-monitor>（私有）
+**打包下载**：[v1.0.0 Release](https://github.com/MinaMiKune/dsh-deepseek-usage-monitor/releases/tag/v1.0.0) 中的 `dsh-deepseek-usage-monitor-v1.0.0.zip`
+
+从仓库获取：
+
+```bash
+git clone https://github.com/MinaMiKune/dsh-deepseek-usage-monitor.git
+```
+
 ---
 
 ## 1. 环境要求
@@ -13,6 +22,7 @@
 |---|---|
 | DSH | 0.2.x（已在 `0.2.1-rc.3` 上安装、加载并实测） |
 | 运行时 | Node.js ≥ 20（实测 v24.20.0）；插件为纯 ESM，无第三方依赖、无构建步骤 |
+| 测试 | 默认隔离模式 Node ≥ 20；`npm run test:sandbox` 需要 Node ≥ 22（`--test-isolation`） |
 | 操作系统 | 任意 DSH 支持的平台（实测 Windows；路径逻辑使用 Node `path`） |
 | 可选 | 一个 DeepSeek **API Key**（`sk-…`），仅在使用 `/user/balance` 端点时需要 |
 | 可选 | 已登录的 DeepSeek 账户（DSH 设置 → 账户），用于账户钱包余额 |
@@ -266,13 +276,18 @@ plugin_manager install_bundle  target = D:\...\deepseek-usage-monitor
 ## 9. 测试
 
 ```bash
-node --test --test-isolation=none "test/*.test.mjs"     # 本仓库实测命令
-npm test                                                 # 同上（脚本已配置）
+npm test              # 默认隔离：每个测试文件一个子进程（CI 与常规终端）
+npm run test:sandbox  # 单进程：当环境禁止 spawn 管道时使用（本机 DSH 沙箱即如此）
 ```
 
-> 本机 DSH 的沙箱禁止 `child_process.spawn` 的管道模式，因此 `node --test test/` 的默认“每文件一个子进程”隔离会报 `spawn EPERM`；使用 `--test-isolation=none` 在单进程内运行即可，与隔离模式相比仅少了进程级隔离。
+| 命令 | 展开后的实际命令 | 适用场景 |
+|---|---|---|
+| `npm test` | `node --test test/*.test.mjs` | GitHub Actions、常规终端；Node 20+ |
+| `npm run test:sandbox` | `node --test --test-isolation=none "test/*.test.mjs"` | 禁用 `child_process.spawn` 管道的沙箱环境；需要 Node 22+ 的 `--test-isolation` |
 
-当前 **114 个测试全部通过**，覆盖：
+> 本机 DSH 的沙箱禁止 `child_process.spawn` 的管道模式，默认隔离会报 `spawn EPERM`，因此在本机请用 `npm run test:sandbox`（114 项全部通过）。两种模式测试内容完全相同，仅进程隔离方式不同。
+
+当前 **114 个测试全部通过**（`test:sandbox` 本机实测；`test` 由 GitHub Actions 在 Node 20/22/24 上验证），覆盖：
 
 | 文件 | 覆盖内容 |
 |---|---|

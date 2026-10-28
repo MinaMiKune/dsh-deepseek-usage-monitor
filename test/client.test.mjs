@@ -97,7 +97,10 @@ test('the client bundle registers a sidebar entry and a matching main panel', as
   const registrations = []
   const injectedKeys = []
   const ctx = {
-    get: () => undefined,
+    // Pin the language: the plugin falls back to the ambient `navigator.language`
+    // when the locale service is absent, which would make this assertion depend
+    // on the machine running the test.
+    get: (name) => (name === 'locale' ? { getLocale: () => ({ locale: 'zh-CN' }) } : undefined),
     slots: {
       inject(key, callback) {
         injectedKeys.push(key)
