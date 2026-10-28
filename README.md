@@ -5,7 +5,7 @@
 插件包名：`@local/dsh-deepseek-usage-monitor`
 形态：一个 DSH bundle（Host 半 + 浏览器半 + 左栏槽位注册 + Agent 工具 + 已鉴权的 `/api` 路由）。
 
-**仓库**：<https://github.com/MinaMiKune/dsh-deepseek-usage-monitor>（私有）
+**仓库**：<https://github.com/MinaMiKune/dsh-deepseek-usage-monitor>
 **打包下载**：[v1.0.0 Release](https://github.com/MinaMiKune/dsh-deepseek-usage-monitor/releases/tag/v1.0.0) 中的 `dsh-deepseek-usage-monitor-v1.0.0.zip`
 
 从仓库获取：
