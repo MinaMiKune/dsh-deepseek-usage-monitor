@@ -12,7 +12,8 @@ import { normalizeConfig } from '../lib/config.js'
 import { setup } from '../index.js'
 import { createFakeCtx, createServiceRecorder } from './fake-ctx.mjs'
 
-const TEST_TMP = path.join(import.meta.dirname, '.tmp')
+/** Scratch root, private to this test file (files run in parallel processes). */
+const TEST_TMP = path.join(import.meta.dirname, '.tmp', `account-${process.pid}`)
 const created = []
 
 test.after(async () => {

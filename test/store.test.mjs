@@ -4,8 +4,15 @@ import { mkdtemp, mkdir, readFile, rm, writeFile, stat, readdir } from 'node:fs/
 import path from 'node:path'
 import { StateStore, coerceState, emptyState, defaultDataDir } from '../lib/store.js'
 
-/** Temp root kept inside the package so no test writes outside the project. */
-const TEST_TMP = path.join(import.meta.dirname, '.tmp')
+/**
+ * Scratch root, private to this test file.
+ *
+ * `node --test` runs test FILES in parallel processes, so a shared scratch root
+ * lets one file's teardown delete the directory another file is still using
+ * (observed as ENOENT on mkdir and ENOTEMPTY on rmdir). One subtree per file,
+ * and only that subtree is removed.
+ */
+const TEST_TMP = path.join(import.meta.dirname, '.tmp', `store-${process.pid}`)
 
 const created = []
 

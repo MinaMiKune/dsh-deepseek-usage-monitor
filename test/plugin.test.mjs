@@ -5,7 +5,11 @@ import path from 'node:path'
 import { setup } from '../index.js'
 import { createFakeCtx, createServiceRecorder } from './fake-ctx.mjs'
 
-const TEST_TMP = path.join(import.meta.dirname, '.tmp')
+/**
+ * Scratch root, private to this test file (test files run in parallel
+ * processes, so a shared root would race with another file's teardown).
+ */
+const TEST_TMP = path.join(import.meta.dirname, '.tmp', `plugin-${process.pid}`)
 const created = []
 const cleanups = []
 

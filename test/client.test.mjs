@@ -3,7 +3,8 @@ import assert from 'node:assert/strict'
 import { mkdtemp, mkdir, rm } from 'node:fs/promises'
 import path from 'node:path'
 
-const TEST_TMP = path.join(import.meta.dirname, '.tmp')
+/** Scratch root, private to this test file (files run in parallel processes). */
+const TEST_TMP = path.join(import.meta.dirname, '.tmp', `client-${process.pid}`)
 
 /** The bundle registers itself once per process; capture it on the first import. */
 let bundlePromise = null
