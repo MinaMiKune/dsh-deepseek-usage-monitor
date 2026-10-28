@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "DeepSeek Usage Monitor",
+    "description": "Tracks the official DeepSeek API account balance plus Harness-observed token usage, with a sidebar panel, agent tools, and threshold alerts."
+  }
+}

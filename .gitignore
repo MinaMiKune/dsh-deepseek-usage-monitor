@@ -1,0 +1,16 @@
+# Dependencies (a DSH bundle installed by path needs none, but pnpm may create them)
+node_modules/
+
+# Test scratch space created by the store/client/plugin tests
+test/.tmp/
+
+# Local build/pack artifacts
+*.zip
+*.tar.gz
+*.log
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

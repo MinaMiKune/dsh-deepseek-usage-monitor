@@ -1,0 +1,22 @@
+# Bundle patch for the DeepSeek Usage Monitor.
+#
+# This row is inserted when the bundle is installed. Override any field from the
+# profile's own patch layer (profile cordis.patch.yml) by targeting the same id:
+#
+#   - id: deepseek-usage-monitor
+#     config:
+#       api_key_env: DEEPSEEK_API_KEY
+#       low_balance_threshold: 20
+#
+# Never put a literal API key in a file that is committed to a repository; use
+# `api_key_env` (preferred) or the credentials service.
+- insert:
+    - id: deepseek-usage-monitor
+      name: '@local/dsh-deepseek-usage-monitor'
+      config:
+        # Seconds between account balance polls.
+        balance_poll_interval: 300
+        # Seconds between local usage re-aggregations (no network traffic).
+        usage_poll_interval: 120
+        # Credentials service reference / environment variable holding the key.
+        api_key_env: DEEPSEEK_API_KEY

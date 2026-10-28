@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "DeepSeek 用量监控",
+    "description": "监控 DeepSeek API 官方账户余额与 Harness 实际观测到的 Token 用量，提供左侧栏面板、Agent 工具与阈值告警。"
+  }
+}
