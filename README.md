@@ -320,9 +320,9 @@ npm run test:sandbox  # 单进程：当环境禁止 spawn 管道时使用（本�
 
 **已核实可用**
 
-- `GET /user/balance`：官方文档存在，字段 `is_available` / `balance_infos[].{currency,total_balance,granted_balance,topped_up_balance}`；实测可用（API Key 无效时返回 401）。
-- `ctx.deepseekAccount.getBalance()`：Host 服务，返回账户充值钱包与赠送钱包；**已在本机实测成功**，读到真实余额 CNY 4.80413。
-- `llm/stream` 的 `usage` chunk：真实供应商 Token 统计；**已在本机实测**（捕获到 40 次调用、13.69M tokens，含 99.7% 缓存命中）。
+- `GET /user/balance`：官方文档已核对（`is_available` / `balance_infos[].{currency,total_balance,granted_balance,topped_up_balance}`）；本次开发环境没有可用的 API Key，因此**生产端点未做成功调用**，其成功/失败/401/429 分类均由 Mock 覆盖。
+- `ctx.deepseekAccount.getBalance()`：Host 服务，返回账户充值钱包与赠送钱包；**已在本机实测成功**（具体金额不在文档中复述）。
+- `llm/stream` 的 `usage` chunk：真实供应商 Token 统计；**已在本机实测**，`inputTokens`/`outputTokens`/`cacheReadTokens` 均为真实返回值（具体用量随账户使用情况变化，此处不复述）。
 
 **官方不提供（因此插件不实现、也不模拟）**
 

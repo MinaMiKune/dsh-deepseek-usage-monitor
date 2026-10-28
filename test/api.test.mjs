@@ -42,16 +42,29 @@ function scriptedFetch(outcomes) {
   return { fetchImpl, calls }
 }
 
-/** A fetch that never answers on its own and rejects when aborted. */
+/**
+ * A fetch that never answers on its own and rejects when aborted.
+ *
+ * `AbortSignal.timeout()` arms an UNREF'd timer, so it cannot keep the event
+ * loop alive by itself: on Node 20 and 22 the loop drained before the deadline
+ * fired and node:test reported "Promise resolution is still pending". The
+ * ref'd keep-alive below holds the loop open until the abort arrives, then is
+ * cleared. (Node 24 passed by luck; the fixture must not depend on that.)
+ */
 function hangingFetch(url, init) {
   return new Promise((resolve, reject) => {
     const signal = init?.signal
-    if (!signal) return
-    if (signal.aborted) {
-      reject(Object.assign(new Error('aborted'), { name: 'AbortError' }))
+    if (!signal) {
+      reject(new Error('hangingFetch requires an abort signal'))
       return
     }
-    signal.addEventListener('abort', () => reject(Object.assign(new Error('aborted'), { name: 'AbortError' })), { once: true })
+    const keepAlive = setTimeout(() => undefined, 60_000)
+    const onAbort = () => {
+      clearTimeout(keepAlive)
+      reject(Object.assign(new Error('aborted'), { name: 'AbortError' }))
+    }
+    if (signal.aborted) onAbort()
+    else signal.addEventListener('abort', onAbort, { once: true })
   })
 }
 
